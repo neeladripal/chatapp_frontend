@@ -77,9 +77,6 @@ const User = () => {
               />
 
               <div>
-                <a onClick={() => alert("Google login will be added soon")}>
-                  Google Signup
-                </a>
                 {loading ? (
                   <button>
                     <img
@@ -91,10 +88,6 @@ const User = () => {
                   <button type="submit">Sign up</button>
                 )}
               </div>
-              <p>
-                This page is protected by Google Authentication, and subject to
-                the Google Privacy Policy and Terms of service.
-              </p>
             </CustomLogin>
           </LoginForm>
         ) : (
@@ -141,9 +134,6 @@ const User = () => {
               />
 
               <div>
-                <a onClick={() => alert("This feature will be added soon")}>
-                  Forget Password
-                </a>
                 {loading ? (
                   <button>
                     <img
@@ -155,11 +145,6 @@ const User = () => {
                   <button type="submit"> Sign in</button>
                 )}
               </div>
-
-              <p>
-                This page is protected by Google Authentication, and subject to
-                the Google Privacy Policy and Terms of service.
-              </p>
             </CustomLogin>
           </LoginForm>
         )}
@@ -282,8 +267,8 @@ const Option = styled.div`
 `;
 const CustomLogin = styled.form`
   input {
-    width: 100%;
-    padding: 0.2rem 0.8rem;
+    width: 95%;
+    padding: 0.5rem;
     font-size: 1rem;
     outline: none;
     margin-top: 0.6rem;
@@ -293,7 +278,7 @@ const CustomLogin = styled.form`
 
   div {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     margin-top: 30px;
 
@@ -309,7 +294,7 @@ const CustomLogin = styled.form`
     }
 
     button {
-      padding: 0.35rem 1.1rem;
+      padding: 0.5rem;
       min-width: 85px;
       border: none;
       background: linear-gradient(#168add, #2265d4);
