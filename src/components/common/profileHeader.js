@@ -1,9 +1,9 @@
 import React from "react";
 
 function ProfileHeader(props) {
-  const { contact } = props;
+  const { contact, onProfileHeaderClick } = props;
   return (
-    <div className="profile-header">
+    <div className="profile-header" onClick={onProfileHeaderClick}>
       <div className="info">
         <img
           src={process.env.PUBLIC_URL + contact.profilePic}

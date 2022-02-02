@@ -22,11 +22,19 @@ function SideBar(props) {
   const userProfile = {
     id: 0,
     name: "You",
-    profilePic: "profile/ayushk.jpeg",
+    profilePic: "profile/avatar.png",
   };
+
+  const handleProfileHeaderClick = () => {
+    setChat(null);
+  };
+
   return (
     <div className="sidebar">
-      <ProfileHeader contact={userProfile} />
+      <ProfileHeader
+        contact={userProfile}
+        onProfileHeaderClick={handleProfileHeaderClick}
+      />
       <SearchChats />
       <Contacts setChat={setChat} />
     </div>

@@ -2,14 +2,19 @@ import React, { useState } from "react";
 import "./Main.css";
 import SideBar from "./sidebar/SideBar";
 import Chat from "./chat/Chat";
-import Placeholder from "./chat/PlaceHolder";
+import UserDetails from "./chat/UserDetails";
 
-function Main() {
+function Main(props) {
   const [selectedChat, setChat] = useState();
+  const { user } = props;
   return (
     <div className="Main">
-      <SideBar setChat={setChat} />
-      {selectedChat ? <Chat selectedChat={selectedChat} /> : <Placeholder />}
+      <SideBar setChat={setChat} user={user} />
+      {selectedChat ? (
+        <Chat selectedChat={selectedChat} />
+      ) : (
+        <UserDetails user={user} />
+      )}
     </div>
   );
 }
