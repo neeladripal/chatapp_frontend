@@ -1,38 +1,107 @@
 import React, { useState } from "react";
+import * as userService from "../services/userService";
+import auth from "../services/authService";
 import styled from "styled-components";
 
 const User = () => {
   const [forSignUp, setForSignUp] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
+  const [account, setAccount] = useState({ name: "", email: "", password: "" });
+  const [errors, setErrors] = useState({});
 
-  const register = (e) => {
-    e.preventDefault();
+  const handleChange = ({ currentTarget: input }) => {
+    const newAccount = { ...account };
+    newAccount[input.name] = input.value;
+    setAccount(newAccount);
   };
 
-  const loginUser = (e) => {};
+  const trimValues = () => {
+    const newAccount = { ...account };
+    newAccount.name = newAccount.name.trim();
+    newAccount.email = newAccount.email.trim();
+    return newAccount;
+  };
+
+  const validateFields = ({ name, email, password }) => {
+    const newErrors = {};
+    if (forSignUp) {
+      if (name === "") newErrors.name = "Name is required.";
+      else if (name > 20) {
+        newErrors.name = "Name can be at most 20 characters long.";
+      }
+    }
+
+    if (email === "") newErrors.email = "Email is required.";
+    else if (email.length > 50) {
+      newErrors.email = "Email can be at most 50 characters long.";
+    }
+
+    if (password === "") newErrors.password = "Password is required.";
+    else if (password.length < 4 || password.length > 50) {
+      newErrors.password =
+        "Password length must be between 4 and 50 characters.";
+    }
+    return Object.keys(newErrors).length === 0 ? null : newErrors;
+  };
+
+  const validate = () => {
+    const newAccount = trimValues();
+    setAccount(newAccount);
+    const newErrors = validateFields(newAccount);
+    setErrors(newErrors || {});
+    return newErrors ? false : true;
+  };
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    if (!validate()) return;
+
+    // Call the server
+    try {
+      const response = await userService.register(account);
+      auth.loginWithJwt(response.headers["x-auth-token"]);
+      window.location = "/";
+    } catch (ex) {
+      if (ex.response && ex.response.status === 400) {
+        console.log(ex.response.data);
+      }
+    }
+  };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    if (!validate()) return;
+
+    // Call the server
+    try {
+      await auth.login(account.email, account.password);
+      window.location = "/";
+    } catch (ex) {
+      if (ex.response && ex.response.status === 400) {
+        console.log(ex.response.data);
+      }
+    }
+  };
+
+  const handleGoogleAuth = (e) => {
+    alert("Google login will be added soon");
+  };
 
   return (
     <>
-      <MobileHeader>
-        <h1>College Window </h1>
-        <h3>helps you to get college updates </h3>
-      </MobileHeader>
       <Container>
         <SideImg
           src="https://mazipan.github.io/login-page-css/undraw-login.1df4c833.svg"
           alt=""
         />
         {forSignUp ? (
-          <LoginForm>
+          <CustomForm>
             <Header>
               <p>
                 <img
                   src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7AzTFrLQWcLwhDP8TA4v0Gv_sAcTKUBI1qDyQ5U_Iq6rZCFn5WJOfZn6jGgZX412DeAs&usqp=CAU"
                   alt=""
-                />{" "}
+                />
                 Sign Up
               </p>
               <span onClick={() => setForSignUp(!forSignUp)}>
@@ -40,9 +109,7 @@ const User = () => {
               </span>
             </Header>
 
-            <GoogleLogin
-              onClick={() => alert("Google login will be added soon")}
-            >
+            <GoogleLogin onClick={handleGoogleAuth}>
               <img
                 src="https://mazipan.github.io/login-page-css/google.ddf4da71.svg"
                 alt=""
@@ -56,24 +123,30 @@ const User = () => {
               <div></div>
             </Option>
 
-            <CustomLogin onSubmit={register}>
+            <CustomLogin onSubmit={handleRegister}>
               <input
                 type="text"
-                placeholder="Full Name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                placeholder="Name"
+                name="name"
+                value={account.name}
+                onChange={handleChange}
+                required
               />
               <input
                 type="email"
                 placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                name="email"
+                value={account.email}
+                onChange={handleChange}
+                required
               />
               <input
                 type="password"
                 placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                name="password"
+                value={account.password}
+                onChange={handleChange}
+                required
               />
 
               <div>
@@ -89,15 +162,15 @@ const User = () => {
                 )}
               </div>
             </CustomLogin>
-          </LoginForm>
+          </CustomForm>
         ) : (
-          <LoginForm>
+          <CustomForm>
             <Header>
               <p>
                 <img
                   src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7AzTFrLQWcLwhDP8TA4v0Gv_sAcTKUBI1qDyQ5U_Iq6rZCFn5WJOfZn6jGgZX412DeAs&usqp=CAU"
                   alt=""
-                />{" "}
+                />
                 Sign in
               </p>
               <span onClick={() => setForSignUp(!forSignUp)}>
@@ -105,9 +178,7 @@ const User = () => {
               </span>
             </Header>
 
-            <GoogleLogin
-              onClick={() => alert("Google login will be added soon")}
-            >
+            <GoogleLogin onClick={handleGoogleAuth}>
               <img
                 src="https://mazipan.github.io/login-page-css/google.ddf4da71.svg"
                 alt=""
@@ -119,18 +190,22 @@ const User = () => {
               <p>or</p>
               <div></div>
             </Option>
-            <CustomLogin onSubmit={loginUser}>
+            <CustomLogin onSubmit={handleLogin}>
               <input
                 type="email"
                 placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                name="email"
+                value={account.email}
+                onChange={handleChange}
+                required
               />
               <input
                 type="password"
                 placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                name="password"
+                value={account.password}
+                onChange={handleChange}
+                required
               />
 
               <div>
@@ -146,7 +221,7 @@ const User = () => {
                 )}
               </div>
             </CustomLogin>
-          </LoginForm>
+          </CustomForm>
         )}
       </Container>
     </>
@@ -167,7 +242,7 @@ const Container = styled.div`
   }
 `;
 
-const LoginForm = styled.div`
+const CustomForm = styled.div`
   height: auto;
   width: 388.797px;
   background-color: #fff;

@@ -31,15 +31,20 @@ function ChatBox(props) {
           onEmojiClick={onEmojiClick}
         />
       )}
-      <img
-        src={process.env.PUBLIC_URL + "data.svg"}
-        alt=""
-        onClick={() => {
-          togglePicker(!pickerVisible);
-        }}
-        className="emoji"
-      ></img>
       <div className="input-wrapper">
+        <img
+          src={process.env.PUBLIC_URL + "data.svg"}
+          alt=""
+          onClick={() => {
+            togglePicker(!pickerVisible);
+          }}
+          className="icon in-chat-box"
+        ></img>
+        <img
+          src={process.env.PUBLIC_URL + "image.svg"}
+          alt=""
+          className="icon in-chat-box"
+        ></img>
         <input
           type="text"
           placeholder="Type a message"
@@ -51,7 +56,7 @@ function ChatBox(props) {
       <img
         src={process.env.PUBLIC_URL + "send-icon.svg"}
         alt=""
-        className="send"
+        className="icon"
         onClick={handleMessageSend}
       ></img>
     </div>

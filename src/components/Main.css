@@ -7,27 +7,34 @@
   background: #f8f9fb;
 }
 
-.placeholder {
+.user-details {
   flex: 3;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   font-size: 14px;
-  gap: 10px;
+  gap: 20px;
   color: rgba(0, 0, 0, 0.45);
 }
 
-.placeholder img {
+.user-details img {
   width: 240px;
   height: 240px;
   border-radius: 50%;
   object-fit: contain;
 }
 
-.placeholder > span {
+.user-details span {
   font-size: 32px;
   color: #525252;
+}
+
+.logout {
+  margin-top: 50px;
+  font-size: 20px;
+  color: red;
+  cursor: pointer;
 }
 
 .sidebar {
@@ -201,17 +208,13 @@
   bottom: 0;
 }
 
-.emoji {
+.icon {
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  opacity: 0.4;
   cursor: pointer;
 }
 
-.send {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  cursor: pointer;
+.in-chat-box {
+  opacity: 0.4;
 }

@@ -1,16 +1,21 @@
+import React, { Component } from "react";
 import Main from "./components/Main";
 import User from "./components/User";
+import auth from "./services/authService";
 import "./App.css";
-import { useEffect, useState } from "react";
 
-function App() {
-  const newUser = {
-    name: "Default",
-    about: "ok",
-    profilePic: "profile/avatar.png",
-  };
-  const [user, setUser] = useState(newUser);
-  return <div className="App">{user ? <Main user={user} /> : <User />}</div>;
+class App extends Component {
+  state = { user: null };
+
+  componentDidMount() {
+    const user = auth.getCurrentUser();
+    this.setState({ user });
+  }
+
+  render() {
+    const { user } = this.state;
+    return <div className="App">{user ? <Main user={user} /> : <User />}</div>;
+  }
 }
 
 export default App;

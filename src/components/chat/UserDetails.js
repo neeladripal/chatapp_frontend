@@ -1,16 +1,29 @@
 import React from "react";
+import auth from "../../services/authService";
 
 function UserDetails(props) {
   const { user } = props;
+
+  const handleLogout = (e) => {
+    auth.logout();
+    window.location = "/";
+  };
+
   return (
-    <div className="placeholder">
+    <div className="user-details">
       <img
-        className="placeholder-image"
-        alt="WELCOME TO CHATAPP"
-        src={process.env.PUBLIC_URL + user.profilePic}
+        alt="PROFILE_PIC"
+        src={
+          user.profilePic
+            ? user.profilePic
+            : process.env.PUBLIC_URL + "/profile/avatar.png"
+        }
       />
       <span>{user.name}</span>
-      {user.about}
+      {user.email}
+      <div className="logout" onClick={handleLogout}>
+        Logout
+      </div>
     </div>
   );
 }
