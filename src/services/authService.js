@@ -1,9 +1,12 @@
 import http from "./httpService";
 import jwt_decode from "jwt-decode";
 import config from "../config.json";
+import Cookies from "universal-cookie";
 
+const cookies = new Cookies();
 const apiEndpoint = config.apiUrl + "/auth";
 const tokenKey = "token";
+const userInfo = "user-info";
 
 http.setJwt(getJwt());
 
@@ -12,26 +15,30 @@ export function getJwt() {
 }
 
 export async function login(email, password) {
-  const { data: jwt } = await http.post(apiEndpoint, {
+  const response = await http.post(apiEndpoint, {
     email,
     password,
   });
-  console.log(jwt);
+  const jwt = response.headers["x-auth-token"];
   localStorage.setItem(tokenKey, jwt);
+  cookies.set(userInfo, JSON.stringify(response.data), { path: "/" });
 }
 
-export function loginWithJwt(jwt) {
+export function loginWithJwt(jwt, user) {
   localStorage.setItem(tokenKey, jwt);
+  cookies.set(userInfo, JSON.stringify(user), { path: "/" });
 }
 
 export function logout() {
   localStorage.removeItem(tokenKey);
+  cookies.remove(userInfo);
 }
 
 export function getCurrentUser() {
   try {
-    const jwt = localStorage.getItem(tokenKey);
-    const user = jwt_decode(jwt);
+    const user = cookies.get(userInfo);
+    const { email } = jwt_decode(getJwt());
+    user.email = email;
     return user;
   } catch (ex) {
     return null;

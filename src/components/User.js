@@ -59,7 +59,7 @@ const User = () => {
     // Call the server
     try {
       const response = await userService.register(account);
-      auth.loginWithJwt(response.headers["x-auth-token"]);
+      auth.loginWithJwt(response.headers["x-auth-token"], response.data);
       window.location = "/";
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
@@ -83,10 +83,6 @@ const User = () => {
     }
   };
 
-  const handleGoogleAuth = (e) => {
-    alert("Google login will be added soon");
-  };
-
   return (
     <>
       <Container>
@@ -108,20 +104,6 @@ const User = () => {
                 Already have an account?
               </span>
             </Header>
-
-            <GoogleLogin onClick={handleGoogleAuth}>
-              <img
-                src="https://mazipan.github.io/login-page-css/google.ddf4da71.svg"
-                alt=""
-              />
-              <p>Continue with Google</p>
-            </GoogleLogin>
-
-            <Option>
-              <div></div>
-              <p>or</p>
-              <div></div>
-            </Option>
 
             <CustomLogin onSubmit={handleRegister}>
               <input
@@ -178,18 +160,6 @@ const User = () => {
               </span>
             </Header>
 
-            <GoogleLogin onClick={handleGoogleAuth}>
-              <img
-                src="https://mazipan.github.io/login-page-css/google.ddf4da71.svg"
-                alt=""
-              />
-              <p>Continue with Google</p>
-            </GoogleLogin>
-            <Option>
-              <div></div>
-              <p>or</p>
-              <div></div>
-            </Option>
             <CustomLogin onSubmit={handleLogin}>
               <input
                 type="email"
