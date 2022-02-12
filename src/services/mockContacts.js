@@ -1,30 +1,33 @@
 export const contactList = [
   {
     id: 1,
-    name: "Ayush Kulshrestha",
-    profilePic: "profile/ayushk.jpeg",
-    lastText: "Hey Man",
+    name: "kjfiuio",
+    profilePic: "profile/avatar.png",
+    lastText: "Hello",
     lastTextTime: "12:58 PM",
   },
+
   {
     id: 2,
-    name: "John Appleseed",
-    profilePic: "profile/theindiandev.jpeg",
-    lastText: `I'm with @theindiandev`,
-    lastTextTime: "12:45 PM",
+    name: "kjg3hughiuoio",
+    profilePic: "profile/avatar.png",
+    lastText: "Hello fwf",
+    lastTextTime: "12:58 PM",
   },
+
   {
     id: 3,
-    name: "Elon Bezoz",
-    profilePic: "profile/elon.jpeg",
-    lastText: "Where is my Tesla?",
-    lastTextTime: "12:30 PM",
+    name: "kjfifbdhuio",
+    profilePic: "profile/avatar.png",
+    lastText: "Hello etygw",
+    lastTextTime: "12:58 PM",
   },
+  
   {
     id: 4,
-    name: "Jeff Musk",
-    profilePic: "profile/jeff.jpeg",
-    lastText: "Travelling to space",
-    lastTextTime: "12:00 PM",
+    name: "kjfiuwgtio",
+    profilePic: "profile/avatar.png",
+    lastText: "Hello 3t3tg",
+    lastTextTime: "12:55 PM",
   },
 ];

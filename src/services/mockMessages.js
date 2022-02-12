@@ -34,11 +34,4 @@ export const messageList = [
     senderID: 0,
     addedOn: "12:00 PM",
   },
-  {
-    id: 6,
-    messageType: "TEXT",
-    text: "Have you subscribed The Indian Dev ?",
-    senderID: 1,
-    addedOn: "12:00 PM",
-  },
 ];
