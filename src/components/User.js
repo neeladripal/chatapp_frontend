@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import * as userService from "../services/userService";
-import auth from "../services/authService";
+import userService from "../services/userService";
+import authService from "../services/authService";
 import styled from "styled-components";
 
 const User = () => {
@@ -59,7 +59,7 @@ const User = () => {
     // Call the server
     try {
       const response = await userService.register(account);
-      auth.loginWithJwt(response.headers["x-auth-token"], response.data);
+      authService.loginWithJwt(response.headers["x-auth-token"], response.data);
       window.location = "/";
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
@@ -74,7 +74,7 @@ const User = () => {
 
     // Call the server
     try {
-      await auth.login(account.email, account.password);
+      await authService.login(account.email, account.password);
       window.location = "/";
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {

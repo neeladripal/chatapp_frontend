@@ -45,4 +45,5 @@ export function getCurrentUser() {
   }
 }
 
-export default { getJwt, login, loginWithJwt, logout, getCurrentUser };
+const authService = { getJwt, login, loginWithJwt, logout, getCurrentUser };
+export default authService;
