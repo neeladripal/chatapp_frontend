@@ -5,6 +5,7 @@ import Picker from "emoji-picker-react";
 import { messageList } from "../../services/mockMessages";
 
 function ChatBox(props) {
+  const { chatId, onMessageSend } = props;
   const [messageText, setMessageText] = useState("");
   const [pickerVisible, togglePicker] = useState(false);
 
@@ -18,8 +19,12 @@ function ChatBox(props) {
   };
 
   const handleMessageSend = (e) => {
-    setMessageText(e.target.value);
-    props.onMessageSend(messageText);
+    const message = {
+      channelId: chatId,
+      type: "text",
+      content: messageText,
+    };
+    onMessageSend(chatId, message);
     setMessageText("");
   };
 
@@ -64,25 +69,20 @@ function ChatBox(props) {
 }
 
 function Chat(props) {
-  const { selectedChat } = props;
-  const [messages, setMessages] = useState(messageList);
+  const { selectedChat, self, onMessageSend } = props;
 
-  const onMessageSend = (messageText) => {
-    const message = {
-      id: messages.length + 1,
-      messageType: "TEXT",
-      text: messageText,
-      senderID: 1,
-      addedOn: "12:00 PM",
+  const PrivateChatToProfileHeader = (chat) => {
+    return {
+      avatar: chat.receiver.profilePic,
+      name: chat.receiver.name,
     };
-    setMessages([...messages, message]);
   };
 
   return (
     <div className="chat">
-      <ProfileHeader contact={selectedChat} />
-      <Messages messageList={messages} />
-      <ChatBox onMessageSend={onMessageSend} />
+      <ProfileHeader chat={PrivateChatToProfileHeader(selectedChat)} />
+      <Messages messageList={selectedChat.messages} selfId={self._id} />
+      <ChatBox onMessageSend={onMessageSend} chatId={selectedChat._id} />
     </div>
   );
 }

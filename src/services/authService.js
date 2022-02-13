@@ -37,8 +37,9 @@ export function logout() {
 export function getCurrentUser() {
   try {
     const user = cookies.get(userInfo);
-    const { email } = jwt_decode(getJwt());
+    const { _id, email } = jwt_decode(getJwt());
     user.email = email;
+    user._id = _id;
     return user;
   } catch (ex) {
     return null;

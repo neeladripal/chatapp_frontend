@@ -1,16 +1,16 @@
 import React from "react";
 
 function ProfileHeader(props) {
-  const { contact, onProfileHeaderClick } = props;
+  const { chat, onProfileHeaderClick } = props;
   return (
     <div className="profile-header" onClick={onProfileHeaderClick}>
       <div className="info">
         <img
-          src={process.env.PUBLIC_URL + contact.profilePic}
+          src={process.env.PUBLIC_URL + (chat.avatar || "/profile/avatar.png")}
           alt=""
           className="avatar"
         />
-        <span className="name">{contact.name}</span>
+        <span className="name">{chat.name}</span>
       </div>
     </div>
   );

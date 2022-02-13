@@ -107,11 +107,11 @@
   font-size: 15px;
 }
 
-.contact-list {
+.chat-list {
   overflow-y: auto;
 }
 
-.contact-card {
+.chat-card {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -121,11 +121,11 @@
   cursor: pointer;
 }
 
-.contact-card:hover {
+.chat-card:hover {
   background: #ebebeb;
 }
 
-.contact-card .avatar {
+.chat-card .avatar {
   width: 38px;
   height: 38px;
   border-radius: 50%;
@@ -135,27 +135,27 @@
   object-fit: cover;
 }
 
-.contact-card .info {
+.chat-card .info {
   display: flex;
   flex-direction: column;
   width: 100%;
   margin: 0 12px;
 }
 
-.contact-card .name {
+.chat-card .name {
   width: 100%;
   font-size: 16px;
   color: black;
 }
 
-.contact-card .last-message {
+.chat-card .subtitle {
   width: 100%;
   font-size: 14px;
   margin-top: 3px;
   color: rgba(0, 0, 0, 0.8);
 }
 
-.contact-card .message-time {
+.chat-card .addn-info {
   font-size: 12px;
   margin-right: 10px;
   color: rgba(0, 0, 0, 0.45);

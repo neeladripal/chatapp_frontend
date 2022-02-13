@@ -1,5 +1,5 @@
 import React from "react";
-import auth from "../../services/authService";
+import auth from "../services/authService";
 
 function UserDetails(props) {
   const { user } = props;
