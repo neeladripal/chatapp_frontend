@@ -5,7 +5,7 @@ import Picker from "emoji-picker-react";
 import { messageList } from "../../services/mockMessages";
 
 function ChatBox(props) {
-  const { chatId, onMessageSend } = props;
+  const { onMessageSend } = props;
   const [messageText, setMessageText] = useState("");
   const [pickerVisible, togglePicker] = useState(false);
 
@@ -20,11 +20,10 @@ function ChatBox(props) {
 
   const handleMessageSend = (e) => {
     const message = {
-      channelId: chatId,
       type: "text",
       content: messageText,
     };
-    onMessageSend(chatId, message);
+    onMessageSend(message);
     setMessageText("");
   };
 
@@ -82,7 +81,7 @@ function Chat(props) {
     <div className="chat">
       <ProfileHeader chat={PrivateChatToProfileHeader(selectedChat)} />
       <Messages messageList={selectedChat.messages} selfId={self._id} />
-      <ChatBox onMessageSend={onMessageSend} chatId={selectedChat._id} />
+      <ChatBox onMessageSend={onMessageSend} />
     </div>
   );
 }

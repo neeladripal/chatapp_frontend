@@ -2,21 +2,12 @@ import React, { useState, useEffect } from "react";
 import ProfileHeader from "../common/profileHeader";
 import userService from "../../services/userService";
 import ChatCard from "../common/ChatCard";
+import UserCard from "../common/UserCard";
 import { contactList } from "../../services/mockContacts";
 
-function SearchChats() {
-  const [searchString, setSearchString] = useState("");
+function SearchChats(props) {
+  const { searchString, onSearchChange } = props;
 
-  const handleChange = async (e) => {
-    try {
-      const key = e.target.value;
-      setSearchString(key);
-      if (key) {
-        const response = await userService.search(key);
-        console.log(response.data);
-      }
-    } catch (ex) {}
-  };
   return (
     <div className="search-box">
       <div className="input-wrapper">
@@ -29,7 +20,9 @@ function SearchChats() {
           type="text"
           className="input-text"
           value={searchString}
-          onChange={handleChange}
+          onChange={(e) => {
+            onSearchChange(e.target.value);
+          }}
           placeholder="Search by name or email"
         />
       </div>
@@ -69,14 +62,63 @@ function ChatList(props) {
   );
 }
 
+function SearchUserList(props) {
+  const { onNewUserSelect, searchString, chats } = props;
+  const [newUsers, setNewUsers] = useState([]);
+
+  useEffect(async () => {
+    if (searchString) {
+      const { data: users } = await userService.search(searchString);
+      setNewUsers(users);
+    }
+  }, [searchString]);
+
+  return (
+    <div className="chat-list">
+      {newUsers.map((newUser) => (
+        <UserCard
+          key={newUser._id}
+          user={newUser}
+          onUserSelect={onNewUserSelect}
+        />
+      ))}
+    </div>
+  );
+}
+
 function SideBar(props) {
-  const { user, chats, onProfileHeaderClick, onChatSelect } = props;
+  const { user, chats, onProfileHeaderClick, onChatSelect, onNewUserSelect } =
+    props;
+  const [searchString, setSearchString] = useState("");
+
+  const handleSearchStringChange = (key) => {
+    try {
+      key.trim();
+      setSearchString(key);
+    } catch (ex) {}
+  };
+
+  const handleNewUserSelect = (user) => {
+    setSearchString("");
+    onNewUserSelect(user);
+  };
 
   return (
     <div className="sidebar">
       <ProfileHeader chat={user} onProfileHeaderClick={onProfileHeaderClick} />
-      <SearchChats />
-      <ChatList onChatSelect={onChatSelect} chats={chats} />
+      <SearchChats
+        searchString={searchString}
+        onSearchChange={handleSearchStringChange}
+      />
+      {searchString === "" ? (
+        <ChatList onChatSelect={onChatSelect} chats={chats} />
+      ) : (
+        <SearchUserList
+          chats={chats}
+          searchString={searchString}
+          onNewUserSelect={handleNewUserSelect}
+        />
+      )}
     </div>
   );
 }

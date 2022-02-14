@@ -4,7 +4,7 @@ function ChatCard(props) {
   const { chat, onChatSelect, _id } = props;
   const { name, avatar, subtitle, addn_info } = chat;
   return (
-    <div className="chat-card" onClick={() => onChatSelect(_id)}>
+    <div className="chat-card" onClick={(e) => onChatSelect(_id)}>
       <img src={avatar} alt="" className="avatar" />
       <div className="info">
         <span className="name">{name}</span>

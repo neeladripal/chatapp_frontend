@@ -11,9 +11,18 @@ function sendMessage(message) {
   return http.post(apiEndpoint + "/messages/private", message);
 }
 
+function createChat(users) {
+  const requestBody = {
+    users: [...users],
+    type: "private",
+  };
+  return http.post(apiEndpoint + "/channels/private", requestBody);
+}
+
 const chatService = {
   getChats,
   sendMessage,
+  createChat,
 };
 
 export default chatService;
