@@ -39,18 +39,19 @@ function SearchChats() {
 
 function ChatList(props) {
   const { onChatSelect, chats } = props;
-  console.log(chats);
 
   const privateChatToCard = (chat) => {
     const { receiver, messages } = chat;
-    let contact = {};
+    let contact = { subtitle: "", addn_info: "" };
     contact.avatar = receiver.profilePic;
     contact.name = receiver.name;
-    const message = messages[messages.length - 1];
-    if ((message.type = "text")) {
-      contact.subtitle = message.content;
+    if (messages.length > 0) {
+      const message = messages[messages.length - 1];
+      if ((message.type = "text")) {
+        contact.subtitle = message.content;
+      }
+      contact.addn_info = message.addedOn;
     }
-    contact.addn_info = message.addedOn;
     return contact;
   };
 

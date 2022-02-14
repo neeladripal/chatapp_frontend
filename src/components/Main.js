@@ -9,16 +9,13 @@ function Main(props) {
   const { user } = props;
   const [selectedChat, setSelectedChat] = useState();
   const [chats, setChats] = useState([]);
-  const [chatsLength, setChatsLength] = useState(chats.length);
 
   useEffect(async () => {
     const { data: newChats } = await chatService.getChats();
     setChats(newChats.map((chat) => chatToViewMap(chat, user._id)));
-    console.log("chats updated");
-  }, [chats.length]);
+  }, []);
 
   const chatToViewMap = (chat, selfId) => {
-    console.log(chat);
     const view = {};
     view._id = chat._id;
     for (let user of chat.users) {
@@ -35,21 +32,18 @@ function Main(props) {
 
   const handleChatSelect = (chatId) => {
     const newChat = chats.find((chat) => chat._id === chatId);
-    console.log(newChat);
     setSelectedChat(newChat);
   };
 
   const handleMessageSend = async (chatId, message) => {
     const { data: newMessage } = await chatService.sendMessage(message);
-    // chats [ item with chat._id === chatId => messages array (add newMessage)]
     const newChat = chats.find((chat) => chat._id === chatId);
     const index = chats.indexOf(newChat);
-    const newChats = chats;
+    const newChats = [...chats];
     newChat.messages = [...newChat.messages, newMessage];
     newChats[index] = newChat;
     setChats(newChats);
     setSelectedChat(newChat);
-    console.log(newChats);
   };
 
   return (
