@@ -4,7 +4,7 @@ import config from "../config.json";
 import Cookies from "universal-cookie";
 
 const cookies = new Cookies();
-const apiEndpoint = config.apiUrl + "/auth";
+const apiEndpoint = config.serverUrl + "/api/auth";
 const tokenKey = "token";
 const userInfo = "user-info";
 

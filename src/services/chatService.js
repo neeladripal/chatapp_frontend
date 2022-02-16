@@ -1,7 +1,7 @@
 import http from "./httpService";
 import config from "../config.json";
 
-const apiEndpoint = config.apiUrl;
+const apiEndpoint = config.serverUrl + "/api";
 
 function getChats() {
   return http.get(apiEndpoint + "/channels");
