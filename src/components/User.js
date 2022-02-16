@@ -4,7 +4,7 @@ import authService from "../services/authService";
 import styled from "styled-components";
 
 const User = () => {
-  const [forSignUp, setForSignUp] = useState(true);
+  const [forSignUp, setForSignUp] = useState(false);
   const [loading, setLoading] = useState(false);
   const [account, setAccount] = useState({ name: "", email: "", password: "" });
   const [errors, setErrors] = useState({});
@@ -89,17 +89,14 @@ const User = () => {
     <>
       <Container>
         <SideImg
-          src="https://mazipan.github.io/login-page-css/undraw-login.1df4c833.svg"
+          src="https://pixabay.com/get/g42d95294a3b4ed54e29128579dc577bb954bc8b0f0361ac403608df57074bbcadfa1fdbf3918a6f96994b32ba6c8c890.svg"
           alt=""
         />
         {forSignUp ? (
           <CustomForm>
             <Header>
               <p>
-                <img
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7AzTFrLQWcLwhDP8TA4v0Gv_sAcTKUBI1qDyQ5U_Iq6rZCFn5WJOfZn6jGgZX412DeAs&usqp=CAU"
-                  alt=""
-                />
+                <img src={process.env.PUBLIC_URL + "chat.png"} alt="" />
                 Sign Up
               </p>
               <span onClick={() => setForSignUp(!forSignUp)}>
@@ -151,10 +148,7 @@ const User = () => {
           <CustomForm>
             <Header>
               <p>
-                <img
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7AzTFrLQWcLwhDP8TA4v0Gv_sAcTKUBI1qDyQ5U_Iq6rZCFn5WJOfZn6jGgZX412DeAs&usqp=CAU"
-                  alt=""
-                />
+                <img src={process.env.PUBLIC_URL + "chat.png"} alt="" />
                 Sign in
               </p>
               <span onClick={() => setForSignUp(!forSignUp)}>
@@ -252,7 +246,7 @@ const Header = styled.div`
   span {
     font-size: 0.78rem;
     cursor: pointer;
-    color: violet;
+    color: #478778;
     text-decoration: none;
 
     &:hover {
@@ -293,7 +287,7 @@ const CustomLogin = styled.form`
       padding: 0.5rem;
       min-width: 85px;
       border: none;
-      background: linear-gradient(#168add, #2265d4);
+      background: linear-gradient(#008000, #2e8b57);
       border-radius: 20px;
       color: white;
       font-weight: 500;

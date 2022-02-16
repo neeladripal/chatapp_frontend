@@ -16,7 +16,7 @@ function UserDetails(props) {
         src={
           user.profilePic
             ? user.profilePic
-            : process.env.PUBLIC_URL + "/profile/avatar.png"
+            : process.env.PUBLIC_URL + "avatar.png"
         }
       />
       <span>{user.name}</span>

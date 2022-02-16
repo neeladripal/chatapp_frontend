@@ -7,7 +7,7 @@ function GlobalChatCard(props) {
 
   const globalChatToCard = ({ messages }, self) => {
     const globalChat = {
-      avatar: "",
+      avatar: process.env.PUBLIC_URL + "global.png",
       name: "Global",
       lastMessage: "",
       lastMessageTime: "",

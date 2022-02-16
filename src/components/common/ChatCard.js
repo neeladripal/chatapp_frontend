@@ -6,7 +6,7 @@ function ChatCard(props) {
   return (
     <div className="chat-card" onClick={(e) => onChatSelect(_id)}>
       <img
-        src={avatar || process.env.PUBLIC_URL + "/profile/avatar.png"}
+        src={avatar || process.env.PUBLIC_URL + "avatar.png"}
         alt=""
         className="avatar"
       />

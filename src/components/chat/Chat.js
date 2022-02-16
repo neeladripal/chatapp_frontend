@@ -15,7 +15,7 @@ function Chat(props) {
 
   const globalChatToProfileHeader = () => {
     return {
-      avatar: "",
+      avatar: process.env.PUBLIC_URL + "global.png",
       name: "Global",
     };
   };
