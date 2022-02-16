@@ -78,10 +78,27 @@ function Chat(props) {
     };
   };
 
+  const globalChatToProfileHeader = () => {
+    return {
+      avatar: "",
+      name: "Global",
+    };
+  };
+
   return (
     <div className="chat">
-      <ProfileHeader chat={privateChatToProfileHeader(selectedChat)} />
-      <Messages messageList={selectedChat.messages} selfId={self._id} />
+      <ProfileHeader
+        chat={
+          selectedChat.type === "private"
+            ? privateChatToProfileHeader(selectedChat)
+            : globalChatToProfileHeader()
+        }
+      />
+      <Messages
+        type={selectedChat.type}
+        messageList={selectedChat.messages}
+        selfId={self._id}
+      />
       <ChatBox onMessageSend={onMessageSend} />
     </div>
   );

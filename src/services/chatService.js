@@ -11,8 +11,16 @@ function getChat(chatId) {
   return http.get(apiEndpoint + "/channels/" + chatId);
 }
 
+function getGlobalMessages() {
+  return http.get(apiEndpoint + "/messages/global");
+}
+
 function sendMessage(message) {
   return http.post(apiEndpoint + "/messages/private", message);
+}
+
+function sendGlobalMessage(message) {
+  return http.post(apiEndpoint + "/messages/global", message);
 }
 
 function createChat(users) {
@@ -26,7 +34,9 @@ function createChat(users) {
 const chatService = {
   getChats,
   getChat,
+  getGlobalMessages,
   sendMessage,
+  sendGlobalMessage,
   createChat,
 };
 

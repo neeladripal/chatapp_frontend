@@ -10,6 +10,11 @@ function Main(props) {
   const { user } = props;
   const [selectedChat, setSelectedChat] = useState();
   const [chats, setChats] = useState([]);
+  const [globalChat, setGlobalChat] = useState({
+    _id: "global",
+    messages: [],
+    type: "global",
+  });
 
   useEffect(() => {
     function initSocket(userId) {
@@ -25,8 +30,16 @@ function Main(props) {
       setChats(newChats);
     }
 
+    async function fetchGlobalMessages() {
+      const { data: newGlobalMessages } = await chatService.getGlobalMessages();
+      setGlobalChat((globalChat) => {
+        return { ...globalChat, messages: newGlobalMessages };
+      });
+    }
+
     initSocket(user._id);
     fetchChannels();
+    fetchGlobalMessages();
 
     return () => {
       socket.off("connect_error");
@@ -51,8 +64,12 @@ function Main(props) {
   };
 
   const handleChatSelect = (chatId) => {
-    const newChat = chats.find((chat) => chat._id === chatId);
-    setSelectedChat(newChat);
+    if (chatId === "global") {
+      setSelectedChat(globalChat);
+    } else {
+      const newChat = chats.find((chat) => chat._id === chatId);
+      setSelectedChat(newChat);
+    }
   };
 
   const handleMessageSend = async (message) => {
@@ -68,16 +85,39 @@ function Main(props) {
         ]);
         message.channelId = newChat._id;
       }
-      message.senderName = selectedChat.users[0].name;
-      socket.emit("private_message", { body: message }, (err) =>
-        console.log(err)
-      );
-    } catch (ex) {
-      if (ex.response) console.log(ex.response.data);
-    }
+      message.senderName = user.name;
+
+      if (chatId === "global") {
+        socket.emit("global_message", { body: message }, (err) =>
+          console.log(err)
+        );
+      } else {
+        socket.emit("private_message", { body: message }, (err) =>
+          console.log(err)
+        );
+      }
+    } catch (ex) {}
   };
 
   useEffect(() => {
+    socket.on("global_message", ({ body, from }) => {
+      let newGlobalChat;
+
+      setGlobalChat((globalChat) => {
+        newGlobalChat = {
+          ...globalChat,
+          messages: [...globalChat.messages, body],
+        };
+        return newGlobalChat;
+      });
+
+      setSelectedChat((selectedChat) => {
+        if (selectedChat && selectedChat._id && selectedChat._id === "global")
+          return newGlobalChat;
+        else return selectedChat;
+      });
+    });
+
     socket.on("private_message", async ({ body, from }) => {
       let tempChats;
       setChats((chats) => {
@@ -115,6 +155,7 @@ function Main(props) {
 
     return () => {
       socket.off("private_message");
+      socket.off("global_message");
     };
   }, []);
 
@@ -126,6 +167,7 @@ function Main(props) {
         onNewUserSelect={handleNewUserSelect}
         self={user}
         chats={chats}
+        globalChat={globalChat}
       />
       {selectedChat ? (
         <Chat

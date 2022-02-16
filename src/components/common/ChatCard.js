@@ -2,15 +2,15 @@ import React from "react";
 
 function ChatCard(props) {
   const { chat, onChatSelect, _id } = props;
-  const { name, avatar, subtitle, addn_info } = chat;
+  const { name, avatar, lastMessage, lastMessageTime } = chat;
   return (
     <div className="chat-card" onClick={(e) => onChatSelect(_id)}>
       <img src={avatar} alt="" className="avatar" />
       <div className="info">
         <span className="name">{name}</span>
-        <span className="subtitle">{subtitle}</span>
+        <span className="last-message">{lastMessage}</span>
       </div>
-      <span className="addn-info">{addn_info}</span>
+      <span className="message-time">{lastMessageTime}</span>
     </div>
   );
 }

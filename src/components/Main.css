@@ -148,14 +148,14 @@
   color: black;
 }
 
-.chat-card .subtitle {
+.chat-card .last-message {
   width: 100%;
   font-size: 14px;
   margin-top: 3px;
   color: rgba(0, 0, 0, 0.8);
 }
 
-.chat-card .addn-info {
+.chat-card .message-time {
   font-size: 12px;
   margin-right: 10px;
   color: rgba(0, 0, 0, 0.45);

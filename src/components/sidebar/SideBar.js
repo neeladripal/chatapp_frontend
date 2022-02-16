@@ -4,6 +4,40 @@ import userService from "../../services/userService";
 import ChatCard from "../common/ChatCard";
 import UserCard from "../common/UserCard";
 
+function GlobalChat(props) {
+  const { globalChat, self, onChatSelect } = props;
+
+  const globalChatToCard = ({ messages }, self) => {
+    const globalChat = {
+      avatar: "",
+      name: "Global",
+      lastMessage: "",
+      lastMessageTime: "",
+    };
+    if (messages.length > 0) {
+      const lastMessage = messages[messages.length - 1];
+      const senderText =
+        lastMessage.sender._id === self._id
+          ? "You: "
+          : lastMessage.sender.name.split()[0] + ": ";
+      globalChat.lastMessage =
+        senderText +
+        (lastMessage.type === "text" ? lastMessage.content : "Photo");
+      globalChat.lastMessageTime = lastMessage.addedOn;
+    }
+    return globalChat;
+  };
+
+  return (
+    <ChatCard
+      key={globalChat._id}
+      _id={globalChat._id}
+      chat={globalChatToCard(globalChat, self)}
+      onChatSelect={onChatSelect}
+    />
+  );
+}
+
 function SearchChats(props) {
   const { searchString, onSearchChange } = props;
 
@@ -34,16 +68,16 @@ function ChatList(props) {
 
   const privateChatToCard = (chat, self) => {
     const { users, messages } = chat;
-    let contact = { subtitle: "", addn_info: "" };
+    let contact = { lastMessage: "", lastMessageTime: "" };
     contact.avatar = users[0].profilePic;
     contact.name = users[0].name;
     if (messages.length > 0) {
-      const message = messages[messages.length - 1];
-      const senderText = message.sender._id === self._id ? "You: " : "";
-      if ((message.type = "text")) {
-        contact.subtitle = senderText + message.content;
+      const lastMessage = messages[messages.length - 1];
+      const senderText = lastMessage.sender._id === self._id ? "You: " : "";
+      if ((lastMessage.type = "text")) {
+        contact.lastMessage = senderText + lastMessage.content;
       }
-      contact.addn_info = message.addedOn;
+      contact.lastMessageTime = lastMessage.addedOn;
     }
     return contact;
   };
@@ -90,8 +124,14 @@ function SearchUserList(props) {
 }
 
 function SideBar(props) {
-  const { self, chats, onProfileHeaderClick, onChatSelect, onNewUserSelect } =
-    props;
+  const {
+    self,
+    chats,
+    globalChat,
+    onProfileHeaderClick,
+    onChatSelect,
+    onNewUserSelect,
+  } = props;
   const [searchString, setSearchString] = useState("");
 
   const handleSearchStringChange = (key) => {
@@ -106,6 +146,11 @@ function SideBar(props) {
   return (
     <div className="sidebar">
       <ProfileHeader chat={self} onProfileHeaderClick={onProfileHeaderClick} />
+      <GlobalChat
+        onChatSelect={onChatSelect}
+        globalChat={globalChat}
+        self={self}
+      />
       <SearchChats
         searchString={searchString}
         onSearchChange={handleSearchStringChange}

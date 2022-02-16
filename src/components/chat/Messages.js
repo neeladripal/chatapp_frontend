@@ -1,7 +1,13 @@
 import React from "react";
 
 function Message(props) {
-  const { message, selfId } = props;
+  const { type, message, selfId } = props;
+
+  const getSenderText = (type, name) => {
+    if (type !== "private") return <strong>{name + ": "}</strong>;
+    else return "";
+  };
+
   return (
     <div
       style={{
@@ -19,6 +25,8 @@ function Message(props) {
         }}
         className="message-text"
       >
+        {message.sender._id !== selfId &&
+          getSenderText(type, message.sender.name)}
         {message.content}
       </div>
     </div>
@@ -26,11 +34,16 @@ function Message(props) {
 }
 
 function Messages(props) {
-  const { messageList, selfId } = props;
+  const { type, messageList, selfId } = props;
   return (
     <div className="message-area">
       {messageList.map((message) => (
-        <Message key={message._id} message={message} selfId={selfId} />
+        <Message
+          key={message._id}
+          type={type}
+          message={message}
+          selfId={selfId}
+        />
       ))}
     </div>
   );
