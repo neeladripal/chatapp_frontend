@@ -4,39 +4,46 @@ import SideBar from "./sidebar/SideBar";
 import Chat from "./chat/Chat";
 import UserDetails from "./UserDetails";
 import chatService from "../services/chatService";
+import socket from "../services/socket";
 
 function Main(props) {
   const { user } = props;
   const [selectedChat, setSelectedChat] = useState();
   const [chats, setChats] = useState([]);
 
-  useEffect(async () => {
-    const { data: newChats } = await chatService.getChats();
-    setChats(newChats.map((chat) => chatToViewMap(chat, user._id)));
-  }, []);
-
-  const chatToViewMap = (chat, selfId) => {
-    const view = {};
-    view._id = chat._id;
-    for (let user of chat.users) {
-      if (user._id !== selfId) view.receiver = user;
+  useEffect(() => {
+    function initSocket(userId) {
+      socket.auth = { userId };
+      socket.connect();
+      socket.on("connect_error", (err) => {
+        console.log(err.message);
+      });
     }
-    view.messages = chat.messages;
-    view.type = chat.type;
-    return view;
-  };
+
+    async function fetchChannels() {
+      const { data: newChats } = await chatService.getChats();
+      setChats(newChats);
+    }
+
+    initSocket(user._id);
+    fetchChannels();
+
+    return () => {
+      socket.off("connect_error");
+    };
+  }, [user._id]);
 
   const handleProfileHeaderClick = () => {
     setSelectedChat(null);
   };
 
   const handleNewUserSelect = (user) => {
-    const chatExisting = chats.find((chat) => chat.receiver._id === user._id);
+    const chatExisting = chats.find((chat) => chat.users[0]._id === user._id);
     if (chatExisting) setSelectedChat(chatExisting);
     else {
       setSelectedChat({
         _id: null,
-        receiver: user,
+        users: [user],
         messages: [],
         type: "private",
       });
@@ -49,40 +56,67 @@ function Main(props) {
   };
 
   const handleMessageSend = async (message) => {
-    const oldChats = chats;
-    const oldSelectedChat = selectedChat;
     try {
       const chatId = selectedChat._id;
       if (chatId) {
         message.channelId = chatId;
-        const { data: newMessage } = await chatService.sendMessage(message);
-        const newChat = chats.find((chat) => chat._id === chatId);
-        const index = chats.indexOf(newChat);
-        const newChats = [...chats];
-        newChat.messages = [...newChat.messages, newMessage];
-        newChats[index] = newChat;
-        setChats(newChats);
-        setSelectedChat(newChat);
       } else {
-        const receiver = selectedChat.receiver;
+        const receiver = selectedChat.users[0];
         const { data: newChat } = await chatService.createChat([
           user.email,
           receiver.email,
         ]);
         message.channelId = newChat._id;
-        const { data: newMessage } = await chatService.sendMessage(message);
-        newChat.receiver = receiver;
-        delete newChat.users;
-        newChat.messages = [newMessage];
-        const newChats = [...chats, newChat];
-        setChats(newChats);
-        setSelectedChat(newChat);
       }
+      message.senderName = selectedChat.users[0].name;
+      socket.emit("private_message", { body: message }, (err) =>
+        console.log(err)
+      );
     } catch (ex) {
-      setChats(oldChats);
-      setSelectedChat(oldSelectedChat);
+      if (ex.response) console.log(ex.response.data);
     }
   };
+
+  useEffect(() => {
+    socket.on("private_message", async ({ body, from }) => {
+      let tempChats;
+      setChats((chats) => {
+        tempChats = chats;
+        return chats;
+      });
+      const index = tempChats.findIndex((chat) => chat._id === from);
+      let newChat;
+      let newChats;
+      if (index === -1) {
+        try {
+          const { data } = await chatService.getChat(from);
+          newChat = data;
+          newChats = [newChat, ...tempChats];
+        } catch (ex) {
+          if (ex.response) console.log(ex.response.data);
+        }
+      } else {
+        newChats = [...tempChats];
+        newChat = newChats[index];
+        newChat.messages = [...newChat.messages, body];
+      }
+      setChats(newChats);
+
+      setSelectedChat((selectedChat) => {
+        if (
+          selectedChat &&
+          ((selectedChat._id && selectedChat._id === from) ||
+            selectedChat.users[0]._id === newChat.users[0]._id)
+        )
+          return newChat;
+        else return selectedChat;
+      });
+    });
+
+    return () => {
+      socket.off("private_message");
+    };
+  }, []);
 
   return (
     <div className="Main">
@@ -90,7 +124,7 @@ function Main(props) {
         onProfileHeaderClick={handleProfileHeaderClick}
         onChatSelect={handleChatSelect}
         onNewUserSelect={handleNewUserSelect}
-        user={user}
+        self={user}
         chats={chats}
       />
       {selectedChat ? (

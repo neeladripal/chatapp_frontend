@@ -3,7 +3,6 @@ import ProfileHeader from "../common/profileHeader";
 import userService from "../../services/userService";
 import ChatCard from "../common/ChatCard";
 import UserCard from "../common/UserCard";
-import { contactList } from "../../services/mockContacts";
 
 function SearchChats(props) {
   const { searchString, onSearchChange } = props;
@@ -31,17 +30,18 @@ function SearchChats(props) {
 }
 
 function ChatList(props) {
-  const { onChatSelect, chats } = props;
+  const { onChatSelect, chats, self } = props;
 
-  const privateChatToCard = (chat) => {
-    const { receiver, messages } = chat;
+  const privateChatToCard = (chat, self) => {
+    const { users, messages } = chat;
     let contact = { subtitle: "", addn_info: "" };
-    contact.avatar = receiver.profilePic;
-    contact.name = receiver.name;
+    contact.avatar = users[0].profilePic;
+    contact.name = users[0].name;
     if (messages.length > 0) {
       const message = messages[messages.length - 1];
+      const senderText = message.sender._id === self._id ? "You: " : "";
       if ((message.type = "text")) {
-        contact.subtitle = message.content;
+        contact.subtitle = senderText + message.content;
       }
       contact.addn_info = message.addedOn;
     }
@@ -54,7 +54,7 @@ function ChatList(props) {
         <ChatCard
           key={chat._id}
           _id={chat._id}
-          chat={privateChatToCard(chat)}
+          chat={privateChatToCard(chat, self)}
           onChatSelect={onChatSelect}
         />
       ))}
@@ -63,14 +63,17 @@ function ChatList(props) {
 }
 
 function SearchUserList(props) {
-  const { onNewUserSelect, searchString, chats } = props;
+  const { onNewUserSelect, searchString } = props;
   const [newUsers, setNewUsers] = useState([]);
 
-  useEffect(async () => {
-    if (searchString) {
-      const { data: users } = await userService.search(searchString);
-      setNewUsers(users);
+  useEffect(() => {
+    async function searchUsers() {
+      if (searchString !== "") {
+        const { data: users } = await userService.search(searchString);
+        setNewUsers(users);
+      }
     }
+    searchUsers();
   }, [searchString]);
 
   return (
@@ -87,15 +90,12 @@ function SearchUserList(props) {
 }
 
 function SideBar(props) {
-  const { user, chats, onProfileHeaderClick, onChatSelect, onNewUserSelect } =
+  const { self, chats, onProfileHeaderClick, onChatSelect, onNewUserSelect } =
     props;
   const [searchString, setSearchString] = useState("");
 
   const handleSearchStringChange = (key) => {
-    try {
-      key.trim();
-      setSearchString(key);
-    } catch (ex) {}
+    setSearchString(key);
   };
 
   const handleNewUserSelect = (user) => {
@@ -105,16 +105,15 @@ function SideBar(props) {
 
   return (
     <div className="sidebar">
-      <ProfileHeader chat={user} onProfileHeaderClick={onProfileHeaderClick} />
+      <ProfileHeader chat={self} onProfileHeaderClick={onProfileHeaderClick} />
       <SearchChats
         searchString={searchString}
         onSearchChange={handleSearchStringChange}
       />
-      {searchString === "" ? (
-        <ChatList onChatSelect={onChatSelect} chats={chats} />
+      {searchString.trim() === "" ? (
+        <ChatList onChatSelect={onChatSelect} chats={chats} self={self} />
       ) : (
         <SearchUserList
-          chats={chats}
           searchString={searchString}
           onNewUserSelect={handleNewUserSelect}
         />

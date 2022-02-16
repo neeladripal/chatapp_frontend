@@ -6,14 +6,16 @@ function Message(props) {
     <div
       style={{
         "--justify-content": `${
-          message.sender === selfId ? "flex-end" : "flex-start"
+          message.sender._id === selfId ? "flex-end" : "flex-start"
         }`,
       }}
       className="message-wrapper"
     >
       <div
         style={{
-          "--background": `${message.sender === selfId ? "#daf8cb" : "white"}`,
+          "--background": `${
+            message.sender._id === selfId ? "#daf8cb" : "white"
+          }`,
         }}
         className="message-text"
       >

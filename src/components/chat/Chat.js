@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Messages from "./Messages";
 import ProfileHeader from "../common/profileHeader";
 import Picker from "emoji-picker-react";
-import { messageList } from "../../services/mockMessages";
 
 function ChatBox(props) {
   const { onMessageSend } = props;
@@ -19,12 +18,14 @@ function ChatBox(props) {
   };
 
   const handleMessageSend = (e) => {
-    const message = {
-      type: "text",
-      content: messageText,
-    };
-    onMessageSend(message);
-    setMessageText("");
+    if (messageText !== "") {
+      const message = {
+        type: "text",
+        content: messageText,
+      };
+      onMessageSend(message);
+      setMessageText("");
+    }
   };
 
   return (
@@ -70,16 +71,16 @@ function ChatBox(props) {
 function Chat(props) {
   const { selectedChat, self, onMessageSend } = props;
 
-  const PrivateChatToProfileHeader = (chat) => {
+  const privateChatToProfileHeader = (chat) => {
     return {
-      avatar: chat.receiver.profilePic,
-      name: chat.receiver.name,
+      avatar: chat.users[0].profilePic,
+      name: chat.users[0].name,
     };
   };
 
   return (
     <div className="chat">
-      <ProfileHeader chat={PrivateChatToProfileHeader(selectedChat)} />
+      <ProfileHeader chat={privateChatToProfileHeader(selectedChat)} />
       <Messages messageList={selectedChat.messages} selfId={self._id} />
       <ChatBox onMessageSend={onMessageSend} />
     </div>
