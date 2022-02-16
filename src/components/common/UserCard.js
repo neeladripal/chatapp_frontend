@@ -5,7 +5,11 @@ function UserCard(props) {
   const { name, email, profilePic } = user;
   return (
     <div className="chat-card" onClick={(e) => onUserSelect(user)}>
-      <img src={profilePic} alt="" className="avatar" />
+      <img
+        src={profilePic || process.env.PUBLIC_URL + "/profile/avatar.png"}
+        alt=""
+        className="avatar"
+      />
       <div className="info">
         <span className="name">{name}</span>
         <span className="subtitle">{email}</span>

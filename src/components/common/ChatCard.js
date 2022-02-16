@@ -5,7 +5,11 @@ function ChatCard(props) {
   const { name, avatar, lastMessage, lastMessageTime } = chat;
   return (
     <div className="chat-card" onClick={(e) => onChatSelect(_id)}>
-      <img src={avatar} alt="" className="avatar" />
+      <img
+        src={avatar || process.env.PUBLIC_URL + "/profile/avatar.png"}
+        alt=""
+        className="avatar"
+      />
       <div className="info">
         <span className="name">{name}</span>
         <span className="last-message">{lastMessage}</span>

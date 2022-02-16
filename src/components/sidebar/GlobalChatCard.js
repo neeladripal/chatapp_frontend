@@ -1,4 +1,5 @@
 import React from "react";
+import moment from "moment";
 import ChatCard from "../common/ChatCard";
 
 function GlobalChatCard(props) {
@@ -20,7 +21,7 @@ function GlobalChatCard(props) {
       globalChat.lastMessage =
         senderText +
         (lastMessage.type === "text" ? lastMessage.content : "Photo");
-      globalChat.lastMessageTime = lastMessage.addedOn;
+      globalChat.lastMessageTime = moment(lastMessage.addedOn).calendar();
     }
     return globalChat;
   };

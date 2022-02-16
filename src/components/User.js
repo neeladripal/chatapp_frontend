@@ -54,6 +54,7 @@ const User = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    setLoading(true);
     if (!validate()) return;
 
     // Call the server
@@ -70,6 +71,7 @@ const User = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true);
     if (!validate()) return;
 
     // Call the server
@@ -259,57 +261,6 @@ const Header = styled.div`
   }
 `;
 
-const GoogleLogin = styled.button`
-  width: 100%;
-  margin: 0.8rem 0;
-  height: 38px;
-  border-radius: 30px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  font-size: 0.875rem;
-  font-weight: 500;
-  background-color: #2265d4;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  padding: 0 0.6rem;
-
-  img {
-    margin-right: 0.7rem;
-  }
-
-  p {
-    flex: 1;
-    display: flex;
-    color: #fff;
-    justify-content: center;
-    border-left: 1px solid rgba(0, 0, 0, 0.1);
-    align-items: center;
-    height: 100%;
-  }
-`;
-const AppleLogin = styled(GoogleLogin)`
-  background-color: black;
-  p {
-    border-left: 1px solid #bfabab82;
-  }
-`;
-const Option = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 80%;
-  align-items: center;
-  margin: 0.8rem auto;
-
-  div {
-    height: 1px;
-    width: 45%;
-    background-color: #c1b8b8;
-  }
-
-  p {
-    font-size: 0.95rem;
-  }
-`;
 const CustomLogin = styled.form`
   input {
     width: 95%;
@@ -376,28 +327,5 @@ const SideImg = styled.img`
 
   @media (min-width: 1600px) {
     width: 27vw;
-  }
-`;
-const MobileHeader = styled.div`
-  padding: 2rem;
-  padding-bottom: 0.8rem;
-
-  @media (min-width: 900px) {
-    display: none;
-  }
-
-  @media (max-width: 380px) {
-    h1 {
-      font-size: 1.8rem;
-    }
-    h3 {
-      font-size: 1rem;
-    }
-  }
-
-  h3 {
-    color: #2265d4;
-    line-height: 1.6rem;
-    font-weight: 500;
   }
 `;

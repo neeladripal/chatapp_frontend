@@ -6,7 +6,7 @@ function ProfileHeader(props) {
     <div className="profile-header" onClick={onProfileHeaderClick}>
       <div className="info">
         <img
-          src={process.env.PUBLIC_URL + (chat.avatar || "/profile/avatar.png")}
+          src={chat.avatar || process.env.PUBLIC_URL + "/profile/avatar.png"}
           alt=""
           className="avatar"
         />

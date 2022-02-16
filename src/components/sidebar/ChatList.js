@@ -1,4 +1,5 @@
 import React from "react";
+import moment from "moment";
 import ChatCard from "../common/ChatCard";
 
 function ChatList(props) {
@@ -15,7 +16,7 @@ function ChatList(props) {
       if ((lastMessage.type = "text")) {
         contact.lastMessage = senderText + lastMessage.content;
       }
-      contact.lastMessageTime = lastMessage.addedOn;
+      contact.lastMessageTime = moment(lastMessage.addedOn).calendar();
     }
     return contact;
   };
