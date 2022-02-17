@@ -190,13 +190,19 @@
   margin: 5px 15px;
 }
 
-.message-area .message-text {
+.message-area .message-content {
   background: var(--background);
   padding: 8px 10px;
   border-radius: 4px;
   max-width: 50%;
   color: #303030;
   font-size: 14px;
+}
+
+.message-content img {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .chat-box {
@@ -211,10 +217,21 @@
 .icon {
   width: 28px;
   height: 28px;
-  border-radius: 50%;
   cursor: pointer;
 }
 
 .in-chat-box {
   opacity: 0.4;
+}
+
+.emoji-picker {
+  position: "absolute";
+  bottom: "60px";
+}
+
+.image-pond {
+  position: absolute;
+  width: 30%;
+  bottom: 50px;
+  max-height: 50%;
 }

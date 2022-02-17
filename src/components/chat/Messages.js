@@ -23,11 +23,15 @@ function Message(props) {
             message.sender._id === selfId ? "#daf8cb" : "white"
           }`,
         }}
-        className="message-text"
+        className="message-content"
       >
         {message.sender._id !== selfId &&
           getSenderText(type, message.sender.name)}
-        {message.content}
+        {message.type === "text" ? (
+          message.content
+        ) : (
+          <img src={message.content} alt="" />
+        )}
       </div>
     </div>
   );

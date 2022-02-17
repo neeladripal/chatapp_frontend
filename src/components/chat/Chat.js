@@ -34,7 +34,7 @@ function Chat(props) {
         messageList={selectedChat.messages}
         selfId={self._id}
       />
-      <ChatBox onMessageSend={onMessageSend} />
+      <ChatBox key={selectedChat._id} onMessageSend={onMessageSend} />
     </div>
   );
 }

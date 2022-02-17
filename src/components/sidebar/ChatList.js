@@ -13,9 +13,9 @@ function ChatList(props) {
     if (messages.length > 0) {
       const lastMessage = messages[messages.length - 1];
       const senderText = lastMessage.sender._id === self._id ? "You: " : "";
-      if ((lastMessage.type = "text")) {
-        contact.lastMessage = senderText + lastMessage.content;
-      }
+      contact.lastMessage =
+        senderText +
+        (lastMessage.type === "text" ? lastMessage.content : "📷 ");
       contact.lastMessageTime = moment(lastMessage.addedOn).calendar();
     }
     return contact;

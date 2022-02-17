@@ -20,7 +20,7 @@ function GlobalChatCard(props) {
           : lastMessage.sender.name.split(" ")[0] + ": ";
       globalChat.lastMessage =
         senderText +
-        (lastMessage.type === "text" ? lastMessage.content : "Photo");
+        (lastMessage.type === "text" ? lastMessage.content : "📷 ");
       globalChat.lastMessageTime = moment(lastMessage.addedOn).calendar();
     }
     return globalChat;

@@ -88,10 +88,7 @@ const User = () => {
   return (
     <>
       <Container>
-        <SideImg
-          src="https://pixabay.com/get/g42d95294a3b4ed54e29128579dc577bb954bc8b0f0361ac403608df57074bbcadfa1fdbf3918a6f96994b32ba6c8c890.svg"
-          alt=""
-        />
+        <SideImg src={process.env.PUBLIC_URL + "login.png"} alt="" />
         {forSignUp ? (
           <CustomForm>
             <Header>
