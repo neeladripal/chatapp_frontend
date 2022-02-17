@@ -146,7 +146,8 @@ function Main(props) {
         if (
           selectedChat &&
           ((selectedChat._id && selectedChat._id === from) ||
-            selectedChat.users[0]._id === newChat.users[0]._id)
+            (selectedChat.type === "private" &&
+              selectedChat.users[0]._id === newChat.users[0]._id))
         )
           return newChat;
         else return selectedChat;
