@@ -17,7 +17,7 @@ function GlobalChatCard(props) {
       const senderText =
         lastMessage.sender._id === self._id
           ? "You: "
-          : lastMessage.sender.name.split()[0] + ": ";
+          : lastMessage.sender.name.split(" ")[0] + ": ";
       globalChat.lastMessage =
         senderText +
         (lastMessage.type === "text" ? lastMessage.content : "Photo");
