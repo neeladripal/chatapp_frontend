@@ -1,4 +1,4 @@
-import React from "react";
+import React, { createRef, useEffect } from "react";
 
 function Message(props) {
   const { type, message, selfId } = props;
@@ -39,6 +39,13 @@ function Message(props) {
 
 function Messages(props) {
   const { type, messageList, selfId } = props;
+  const messagesEnd = createRef();
+
+  const scrollToBottom = () => {
+    messagesEnd.current.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => scrollToBottom());
   return (
     <div className="message-area">
       {messageList.map((message) => (
@@ -49,6 +56,7 @@ function Messages(props) {
           selfId={selfId}
         />
       ))}
+      <div style={{ float: "left", clear: "both" }} ref={messagesEnd}></div>
     </div>
   );
 }
