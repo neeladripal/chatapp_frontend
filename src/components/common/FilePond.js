@@ -11,6 +11,7 @@ import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orien
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 import FilePondPluginImageTransform from "filepond-plugin-image-transform";
+import FilePondPluginFileValidateSize from "filepond-plugin-file-validate-size";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 
 // Register the plugins
@@ -18,7 +19,8 @@ registerPlugin(
   FilePondPluginImageExifOrientation,
   FilePondPluginImagePreview,
   FilePondPluginFileValidateType,
-  FilePondPluginImageTransform
+  FilePondPluginImageTransform,
+  FilePondPluginFileValidateSize
 );
 
 export default FilePond;
