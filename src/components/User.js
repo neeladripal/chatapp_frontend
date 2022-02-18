@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import userService from "../services/userService";
 import authService from "../services/authService";
 import styled from "styled-components";
+import { toast } from "react-toastify";
 
 const User = () => {
   const [forSignUp, setForSignUp] = useState(false);
   const [loading, setLoading] = useState(false);
   const [account, setAccount] = useState({ name: "", email: "", password: "" });
-  const [errors, setErrors] = useState({});
 
   const handleChange = ({ currentTarget: input }) => {
     const newAccount = { ...account };
@@ -48,14 +48,18 @@ const User = () => {
     const newAccount = trimValues();
     setAccount(newAccount);
     const newErrors = validateFields(newAccount);
-    setErrors(newErrors || {});
+    if (newErrors)
+      for (let key of Object.keys(newErrors)) toast.error(newErrors[key]);
     return newErrors ? false : true;
   };
 
   const handleRegister = async (e) => {
     e.preventDefault();
     setLoading(true);
-    if (!validate()) return;
+    if (!validate()) {
+      setLoading(false);
+      return;
+    }
 
     // Call the server
     try {
@@ -64,7 +68,8 @@ const User = () => {
       window.location = "/";
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
-        console.log(ex.response.data);
+        toast.error(ex.response.data);
+        setLoading(false);
       }
     }
   };
@@ -72,7 +77,10 @@ const User = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
-    if (!validate()) return;
+    if (!validate()) {
+      setLoading(false);
+      return;
+    }
 
     // Call the server
     try {
@@ -80,7 +88,8 @@ const User = () => {
       window.location = "/";
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
-        console.log(ex.response.data);
+        toast.error(ex.response.data);
+        setLoading(false);
       }
     }
   };
