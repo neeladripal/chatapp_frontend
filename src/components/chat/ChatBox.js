@@ -84,8 +84,10 @@ function ChatBox(props) {
               name="image"
               labelIdle='Drag & Drop your image or <span class="filepond--label-action">Browse</span>'
               acceptedFileTypes={["image/*"]}
-              maxFileSize="200KB"
-              imageTransformOutputQuality={50}
+              maxFileSize={process.env.REACT_APP_IMAGE_SIZE}
+              imageTransformOutputQuality={
+                process.env.REACT_APP_IMAGE_TRANSFORM_QUALITY
+              }
             />
           </div>
         )}

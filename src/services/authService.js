@@ -1,10 +1,9 @@
 import http from "./httpService";
 import jwt_decode from "jwt-decode";
-import config from "../config.json";
 import Cookies from "universal-cookie";
 
 const cookies = new Cookies();
-const apiEndpoint = config.serverUrl + "/api/auth";
+const apiEndpoint = process.env.REACT_APP_SERVER_URL + "/api/auth";
 const tokenKey = "token";
 const userInfo = "user-info";
 

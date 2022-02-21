@@ -1,6 +1,5 @@
 import { io } from "socket.io-client";
-import config from "../config.json";
 
-const socket = io(config.serverUrl, { autoConnect: false });
+const socket = io(process.env.REACT_APP_SERVER_URL, { autoConnect: false });
 
 export default socket;

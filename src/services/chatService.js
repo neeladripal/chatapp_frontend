@@ -1,7 +1,6 @@
 import http from "./httpService";
-import config from "../config.json";
 
-const apiEndpoint = config.serverUrl + "/api";
+const apiEndpoint = process.env.REACT_APP_SERVER_URL + "/api";
 
 function getChats() {
   return http.get(apiEndpoint + "/channels");
