@@ -69,8 +69,8 @@ const User = () => {
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         toast.error(ex.response.data);
-        setLoading(false);
       }
+      setLoading(false);
     }
   };
 
@@ -89,8 +89,8 @@ const User = () => {
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         toast.error(ex.response.data);
-        setLoading(false);
       }
+      setLoading(false);
     }
   };
 
