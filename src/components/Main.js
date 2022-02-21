@@ -4,6 +4,7 @@ import Chat from "./chat/Chat";
 import UserDetails from "./UserDetails";
 import chatService from "../services/chatService";
 import socket from "../services/socket";
+import { toast } from "react-toastify";
 
 function Main(props) {
   const { user } = props;
@@ -20,20 +21,29 @@ function Main(props) {
       socket.auth = { userId };
       socket.connect();
       socket.on("connect_error", (err) => {
-        console.log(err.message);
+        toast.error("Internet disconnected");
       });
     }
 
     async function fetchChannels() {
-      const { data: newChats } = await chatService.getChats();
-      setChats(newChats);
+      try {
+        const { data: newChats } = await chatService.getChats();
+        setChats(newChats);
+      } catch (ex) {
+        toast.error(ex.response.data);
+      }
     }
 
     async function fetchGlobalMessages() {
-      const { data: newGlobalMessages } = await chatService.getGlobalMessages();
-      setGlobalChat((globalChat) => {
-        return { ...globalChat, messages: newGlobalMessages };
-      });
+      try {
+        const { data: newGlobalMessages } =
+          await chatService.getGlobalMessages();
+        setGlobalChat((globalChat) => {
+          return { ...globalChat, messages: newGlobalMessages };
+        });
+      } catch (ex) {
+        toast.error(ex.response.data);
+      }
     }
 
     initSocket(user._id);
@@ -95,7 +105,9 @@ function Main(props) {
           console.log(err)
         );
       }
-    } catch (ex) {}
+    } catch (ex) {
+      toast.error(ex.response.data);
+    }
   };
 
   useEffect(() => {
