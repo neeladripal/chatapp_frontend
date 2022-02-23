@@ -23,14 +23,20 @@ function ChatList(props) {
 
   return (
     <div className="chat-list">
-      {chats.map((chat) => (
-        <ChatCard
-          key={chat._id}
-          _id={chat._id}
-          chat={privateChatToCard(chat, self)}
-          onChatSelect={onChatSelect}
-        />
-      ))}
+      {chats
+        .sort((chat1, chat2) => {
+          const lastMessage1 = chat1.messages[chat1.messages.length - 1];
+          const lastMessage2 = chat2.messages[chat2.messages.length - 1];
+          return lastMessage2.addedOn.localeCompare(lastMessage1.addedOn);
+        })
+        .map((chat) => (
+          <ChatCard
+            key={chat._id}
+            _id={chat._id}
+            chat={privateChatToCard(chat, self)}
+            onChatSelect={onChatSelect}
+          />
+        ))}
     </div>
   );
 }
