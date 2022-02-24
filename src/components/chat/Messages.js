@@ -1,10 +1,13 @@
 import React, { createRef, useEffect } from "react";
+import moment from "moment";
 
 function Message(props) {
-  const { type, message, selfId } = props;
+  const { chatType, message, selfId } = props;
+  const { sender, type, content, addedOn } = message;
 
-  const getSenderText = (type, name) => {
-    if (type !== "private") return <strong>{name + ": "}</strong>;
+  const getSenderText = (chatType, senderName) => {
+    if (chatType !== "private")
+      return <div className="sender">{senderName}</div>;
     else return "";
   };
 
@@ -12,33 +15,31 @@ function Message(props) {
     <div
       style={{
         "--justify-content": `${
-          message.sender._id === selfId ? "flex-end" : "flex-start"
+          sender._id === selfId ? "flex-end" : "flex-start"
         }`,
       }}
       className="message-wrapper"
     >
       <div
         style={{
-          "--background": `${
-            message.sender._id === selfId ? "#daf8cb" : "white"
-          }`,
+          "--background": `${sender._id === selfId ? "#daf8cb" : "white"}`,
         }}
         className="message-content"
       >
-        {message.sender._id !== selfId &&
-          getSenderText(type, message.sender.name)}
-        {message.type === "text" ? (
-          message.content
+        {sender._id !== selfId && getSenderText(chatType, sender.name)}
+        {type === "text" ? (
+          <span className="message-text">{content}</span>
         ) : (
-          <img src={message.content} alt="" />
+          <img className="message-img" src={content} alt="" />
         )}
+        <div className="message-time">{moment(addedOn).calendar()}</div>
       </div>
     </div>
   );
 }
 
 function Messages(props) {
-  const { type, messageList, selfId } = props;
+  const { chatType, messageList, selfId } = props;
   const messagesEnd = createRef();
 
   const scrollToBottom = () => {
@@ -51,7 +52,7 @@ function Messages(props) {
       {messageList.map((message) => (
         <Message
           key={message._id}
-          type={type}
+          chatType={chatType}
           message={message}
           selfId={selfId}
         />

@@ -30,7 +30,7 @@ function Chat(props) {
         }
       />
       <Messages
-        type={selectedChat.type}
+        chatType={selectedChat.type}
         messageList={selectedChat.messages}
         selfId={self._id}
       />
