@@ -20,6 +20,7 @@ function ChatBox(props) {
   };
 
   const handleImageIconClick = (e) => {
+    setMessageText("");
     if (pickerVisible) togglePicker(false);
     if (pondVisible && images.length > 0) setImages([]);
     togglePond(!pondVisible);
@@ -44,6 +45,7 @@ function ChatBox(props) {
   };
 
   const handleMessageSend = async (e) => {
+    e.preventDefault();
     if (images.length > 0) {
       console.log(images);
       const file = images[0].file;
@@ -68,7 +70,7 @@ function ChatBox(props) {
 
   return (
     <div>
-      <div className="chat-box">
+      <form className="chat-box" onSubmit={handleMessageSend}>
         {pickerVisible && (
           <Picker
             pickerStyle={{ position: "absolute", bottom: "70px" }}
@@ -117,13 +119,13 @@ function ChatBox(props) {
             disabled={images.length > 0 ? true : false}
           />
         </div>
-        <img
+        <input
+          type="image"
           src={process.env.PUBLIC_URL + "send-icon.svg"}
           alt=""
           className="icon"
-          onClick={handleMessageSend}
-        ></img>
-      </div>
+        />
+      </form>
     </div>
   );
 }
